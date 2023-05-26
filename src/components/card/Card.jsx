@@ -1,19 +1,72 @@
 import styles from "./Card.module.css";
-
-export default function Card(props) {
-   return (
-      <div className={styles.container}>
-         <div className={styles.buttonContainer}>
-            <button onClick={() => props.onClose(props.id)}>X</button>
-         </div>
-         <div className={styles.dataContainer}>
-            <h2>{props.name}</h2>
-            <h4>{props.status}</h4>
-            <h4>{props.species}</h4>
-            <h4>{props.gender}</h4>
-            <h4>{props.origin}</h4>
-         </div>
-         <img src={props.image} alt='Imagen' />
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { addFavorite, removeFavorite } from "../../redux/actions";
+import { useState } from "react";
+import { useEffect } from "react";
+function Card(props) {
+  const [isFav, setIsFav] = useState(false);
+  const handleFavorite = () => {
+    if (isFav) {
+      setIsFav(false);
+      removeFavorite(props.id);
+    } else {
+      setIsFav(true);
+      addFavorite({ props });
+    }
+  };
+  useEffect(() => {
+    props.myFavorites.forEach((fav) => {
+      if (fav.id === props.id) {
+        setIsFav(true);
+      }
+    }); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.myFavorites]);
+  return (
+    <div className={styles.flipCard}>
+      <div className={styles.flipCardInner}>
+        <div className={styles.flipCardFront}>
+          <img src={props.image} alt="Personaje" />
+          <br />
+          <p className={styles.title}>{props.name}</p>
+        </div>
+        <div className={styles.flipCardBack}>
+          <button
+            onClick={() => props.onClose(props.id)}
+            className={styles.btn}
+          >
+            CERRAR
+          </button>
+          <Link to={`/detail/${props.id}`}>
+            <p className={styles.title}>👉 + INFO </p>
+          </Link>
+          <p className={styles.titleBack}>Status: {props.status}</p>
+          <p className={styles.titleBack}>Specie: {props.species}</p>
+          <p className={styles.titleBack}>Gender: {props.gender}</p>
+          <p className={styles.titleBack}>Origin: {props.origin}</p>
+          {isFav ? (
+            <button onClick={handleFavorite}>❤️</button>
+          ) : (
+            <button onClick={handleFavorite}>🤍</button>
+          )}
+        </div>
       </div>
-   );
+    </div>
+  );
 }
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addFavorite: (character) => {
+      dispatch(addFavorite(character));
+    },
+    removeFavorite: (id) => {
+      dispatch(removeFavorite(id));
+    },
+  };
+};
+const mapStateToProps = (state) => {
+  return {
+    myFavorites: state.myFavorites,
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Card);

@@ -1,54 +1,115 @@
-.container {
-    /* border: 0px solid grey; */
-    background-color: darkgray;
-    border-radius: 10px;
-    width: 140px;
-    height: 280px;
-    margin: 20px;
-    padding: 10px;
-    box-shadow: 0 0 10px black;
-    &:hover {
-        box-shadow: 0 0 5px grey;
-    }
+.flipCard {
+  background-color: transparent;
+  width: 250px;
+  height: 340px;
+  perspective: 1000px;
+  font-family: sans-serif;
+  padding: 10px;
+  box-shadow: 0 0 10 black;
+  margin: auto;
 }
 
-.container img {
-    width: 130px;
-    box-shadow: 0 5px 5px black;
-    margin-top: 15px;
+.title {
+  font-size: 1em;
+  font-weight: 900;
+  text-align: center;
+  margin: 0;
+  color: indigo;
 }
 
-.buttonContainer {
-    display: flex;
-    justify-content: end;
+.flipCardInner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
 }
 
-.buttonContainer button {
-    margin: 2px 2px 0 0;
-    border-radius: 3px;
-    background-color: pink;
-    color: red;
-    box-shadow: 0 2px 2px black;
-    &:hover {
-        background-color: red;
-        color: pink;
-        box-shadow: 0 2px 2px white;
-    }
+.flipCard:hover .flipCardInner {
+  transform: rotateY(180deg);
 }
 
-.dataContainer {
-    text-align: center;
-    padding: 5px;
+.flipCardFront,
+.flipCardBack {
+  box-shadow: 0 8px 14px 0 rgba(0, 0, 0, 0.2);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border: 3px solid coral;
+  border-radius: 1rem;
 }
 
-.dataContainer h2 {
-    margin: 2px;
-    font-size: 15px;
-    color: darkslategray
+.flipCardFront {
+  background: linear-gradient(
+    120deg,
+    bisque 60%,
+    rgb(255, 231, 222) 88%,
+    rgb(255, 211, 195) 40%,
+    rgba(255, 127, 80, 0.603) 48%
+  );
+  color: coral;
 }
 
-.dataContainer h4 {
-    margin: 2px;
-    font-size: 10px;
-    color: darkslategray
+.flipCardBack {
+  background: linear-gradient(
+    120deg,
+    rgb(255, 174, 145) 30%,
+    coral 88%,
+    bisque 40%,
+    rgb(255, 185, 160) 78%
+  );
+  color: indigo;
+  transform: rotateY(180deg);
+}
+.btn {
+  border-radius: 1rem;
+  padding: 0.9rem 1.8rem;
+  font-size: 16px;
+  font-weight: 700;
+  color: indigo;
+  border: 3px solid rgb(252, 70, 100);
+  cursor: pointer;
+  position: relative;
+  background-color: transparent;
+  text-decoration: none;
+  overflow: hidden;
+  z-index: 1;
+  font-family: inherit;
+  text-align: center;
+  align-items: center;
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(252, 70, 100);
+  transform: translateX(-100%);
+  transition: all 0.3s;
+  z-index: -1;
+}
+
+.btn:hover::before {
+  transform: translateX(0);
+}
+.titleBack {
+  padding: 10px;
+  font-size: 1em;
+  font-weight: 900;
+  text-align: center;
+  margin: 0;
+  color: indigo;
+}
+img {
+  margin-top: -25px;
+  border-radius: 1rem 1rem 0 0;
 }
