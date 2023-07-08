@@ -1,21 +1,19 @@
-import { ADD_FAVORITE, REMOVE_FAVORITE } from "./actions";
+import { ADD_FAV, REMOVE_FAV } from "./actions";
+import axios from "axios";
 
 const initialState = {
   myFavorites: [],
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_FAVORITE: {
-      return { ...state, myFavorites: [...state.myFavorites, action.payload] };
-    }
-    case REMOVE_FAVORITE: {
+    case ADD_FAV:
       return {
         ...state,
-        myFavorites: state.myFavorites.filter(
-          (character) => character.id !== action.payload
-        ),
+        myFavorites: action.payload,
+        allCharacters: action.payload,
       };
-    }
+    case REMOVE_FAV:
+      return { ...state, myFavorites: action.payload };
     default: {
       return { ...state };
     }
